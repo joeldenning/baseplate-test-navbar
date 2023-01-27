@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Test
 
 on:
   push:
@@ -34,6 +34,7 @@ jobs:
   deploy-dev:
     needs: build
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Download static assets
         uses: actions/download-artifact@v3
@@ -49,6 +50,7 @@ jobs:
   deploy-stage:
     needs: deploy-dev
     runs-on: ubuntu-latest
+    environment: stage
     steps:
       - name: Download static assets
         uses: actions/download-artifact@v3
@@ -64,6 +66,7 @@ jobs:
   deploy-prod:
     needs: deploy-stage
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: Download static assets
         uses: actions/download-artifact@v3
