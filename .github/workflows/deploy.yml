@@ -7,7 +7,7 @@ on:
     branches: "*"
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,49 @@ jobs:
       - run: pnpm test
       - run: pnpm run check-format
       - run: pnpm run lint
+      - name: Store build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: static-assets
+          path: dist
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download static assets
+        uses: actions/download-artifact@v3
+        with:
+          name: static-assets
+      - uses: JustUtahCoders/baseplate-deploy-action@main
+        with:
+          baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
+          microfrontend-name: "@convex/navbar"
+          environment-name: dev
+          upload-dir: dist
+          entry-file: convex-navbar.js
+  deploy-stage:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download static assets
+        uses: actions/download-artifact@v3
+        with:
+          name: static-assets
+      - uses: JustUtahCoders/baseplate-deploy-action@main
+        with:
+          baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
+          microfrontend-name: "@convex/navbar"
+          environment-name: stage
+          upload-dir: dist
+          entry-file: convex-navbar.js
+  deploy-prod:
+    needs: deploy-stage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download static assets
+        uses: actions/download-artifact@v3
+        with:
+          name: static-assets
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
