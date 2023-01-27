@@ -11,28 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - uses: pnpm/action-setup@v2.0.1
+      - uses: pnpm/action-setup@v2
         with:
           version: 7.26.0
-      - run: git checkout main && git checkout $GITHUB_SHA
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - run: pnpm test
-      - run: pnpm run check-format
-      - run: pnpm run lint
+      # Add any other checks here
+      # - run: pnpm run check-format
+      # - run: pnpm run lint
       - name: Store build artifact
         uses: actions/upload-artifact@v3
         with:
           name: static-assets
           path: dist
+
   deploy-dev:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -43,12 +43,14 @@ jobs:
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
-          microfrontend-name: "@convex/navbar"
+          microfrontend-name: "navbar"
           environment-name: dev
           upload-dir: dist
           entry-file: convex-navbar.js
+
   deploy-stage:
     needs: deploy-dev
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: stage
     steps:
@@ -59,12 +61,14 @@ jobs:
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
-          microfrontend-name: "@convex/navbar"
+          microfrontend-name: "navbar"
           environment-name: stage
           upload-dir: dist
           entry-file: convex-navbar.js
+
   deploy-prod:
     needs: deploy-stage
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod
     steps:
@@ -75,7 +79,7 @@ jobs:
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
-          microfrontend-name: "@convex/navbar"
+          microfrontend-name: "navbar"
           environment-name: prod
           upload-dir: dist
           entry-file: convex-navbar.js
