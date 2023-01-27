@@ -26,7 +26,7 @@ jobs:
       - run: pnpm test
       - run: pnpm run check-format
       - run: pnpm run lint
-      - uses: JustUtahCoders/baseplate-deploy-action@experimental-fetch
+      - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
           microfrontend-name: "@convex/navbar"
