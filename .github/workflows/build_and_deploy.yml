@@ -40,6 +40,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: static-assets
+          path: dist
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
@@ -58,6 +59,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: static-assets
+          path: dist
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
@@ -76,6 +78,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: static-assets
+          path: dist
       - uses: JustUtahCoders/baseplate-deploy-action@main
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
