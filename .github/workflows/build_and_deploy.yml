@@ -41,7 +41,7 @@ jobs:
         with:
           name: static-assets
           path: dist
-      - uses: JustUtahCoders/baseplate-deploy-action@main
+      - uses: ConvexCooperative/baseplate-deploy-action@1.2.0
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
           microfrontend-name: "navbar"
@@ -60,7 +60,7 @@ jobs:
         with:
           name: static-assets
           path: dist
-      - uses: JustUtahCoders/baseplate-deploy-action@main
+      - uses: ConvexCooperative/baseplate-deploy-action@1.2.0
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
           microfrontend-name: "navbar"
@@ -79,7 +79,7 @@ jobs:
         with:
           name: static-assets
           path: dist
-      - uses: JustUtahCoders/baseplate-deploy-action@main
+      - uses: ConvexCooperative/baseplate-deploy-action@1.2.0
         with:
           baseplate-token: ${{ secrets.BASEPLATE_TOKEN }}
           microfrontend-name: "navbar"
